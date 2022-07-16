@@ -1,0 +1,28 @@
+.x {
+    background-color: aqua;
+}
+
+.b {
+    background-color: red;
+    border-radius: 30px;
+    /* width: 80px; */
+    font-size: 20px;
+    text-align: center;
+    transition: 1s;
+}
+.n a:hover:not(.b){
+    background-color: cadetblue;
+    border-radius: 20px;
+}
+.billdetails {
+    height: 150px;
+    overflow: auto;
+    margin-top: 10px;
+}
+.bordercolor{
+    border-color: black;
+}
+
+#bc{
+    background-color: darkturquoise;
+}

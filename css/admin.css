@@ -1,0 +1,23 @@
+
+#admin_menu {
+    background-color: aqua;
+}
+
+#admin_menu a {
+    margin: 23px;
+    transition: 0.5s;
+}
+
+#admin_menu a:hover:not(#admin) {
+    background-color: white;
+    border-radius: 30px;
+}
+
+#admin {
+    background-color: darkgoldenrod;
+    border-radius: 30px;
+    color: white;
+}
+.btnc:hover{
+    background-color: red;
+}

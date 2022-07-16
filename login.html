@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <title>Login Page</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row " style="height: 500px;">
+            <div class="col-4 x  offset-4 align-self-center">
+                <h1 class="text-center">LOGIN</h1>
+                <hr>
+                <form class="form " id="loginfm">
+                    <label for="username" class="form-label">UserName</label>
+                    <input type="text" id="username" name="username" class="form-control bordercolor" autofocus
+                        autocomplete="off">
+                    <label for="pass" class="form-label">Password</label>
+                    <input type="password" name="pass" id="pass" class="form-control bordercolor">
+                </form>
+                <div>
+                    <a href="#staticBackdrop"
+                        style="text-decoration: none; color:red; font-weight: bold; margin-left: 40px; font-size: 20px;"
+                        data-bs-toggle="modal">Create/Update Password Here
+                    </a>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-outline-primary m-4" id="lgbtn">LOGIN</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create password model -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-bottom border-primary">
+                    <h5 class="modal-title" id="staticBackdropLabel">You can Update or Change password</h5>
+                    <button type="button" class="btn-close btnc cls" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="cpassform">
+                        <label for="user_name" class="form-label">User Name</label>
+                        <input type="text" name="user_name" id="user_name" class="form-control">
+                        <label for="create_password" class="form-label">New Password</label>
+                        <input type="password" name="create_password" id="create_password" class="form-control">
+                        <label for="reenter_password" class="form-label">Re-Enter Password</label>
+                        <input type="password" name="reenter_password" id="reenter_password" class="form-control">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary cls" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="create_password_save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#lgbtn").click(function () {
+                var name = $("#username").val();
+                var pass = $("#pass").val();
+                if (name == "" || pass == "") {
+                    alert('plz fill all the field');
+                }
+                else {
+                    $.ajax({
+                        url: "log.php",
+                        type: "POST",
+                        data: { uname: name, pass: pass },
+                        success: function (data) {
+                            if (data == 1) {
+                                location = "index.php";
+                            }
+                            else {
+                                alert('Incorrect Username or Password');
+                                $("#loginfm").trigger('reset');
+                            }
+
+                        }
+                    });
+                }
+            });
+
+            $(document).on('click', '.cls', function () {
+                $("#cpassform").trigger('reset');
+            });
+
+            $(document).on('click', '#create_password_save', function () {
+                let newpassword = $("#create_password").val();
+                let reenterpassword = $("#reenter_password").val();
+                let username = $("#user_name").val();
+                if (newpassword == "" || reenterpassword == "") {
+                    alert('Please fill all fields');
+                }
+                else {
+                    if (newpassword.length < 6) {
+                        alert("Please Enter atleast 6 characters");
+                    }
+                    else {
+                        if (newpassword === reenterpassword) {
+                            $.ajax({
+                                url: 'createpassword.php',
+                                type: 'POST',
+                                data: { pass: newpassword, uname: username },
+                                success: function (data) {
+                                    if (data == 1) {
+                                        alert("Password create successful. Please login");
+                                        $("#cpassform").trigger('reset');
+                                        location = "login.html";
+                                    }
+                                    else if (data == 2) {
+                                        alert('User name not exists or inactive. Kindly provide a valid user name');
+                                        $("#cpassform").trigger('reset');
+                                    }
+                                    else {
+                                        // alert("Something went worng, try again");
+                                        alert(data);
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            alert('Does not match. Please enter same value in both fields');
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
